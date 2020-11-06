@@ -1,37 +1,10 @@
-// import React from "react";
-// import {render} from "react-dom";
-
-// import { User } from './components/User';
-// import { Main } from './components/Main';
-
-// class App extends React.Component {
-//     constructor() {
-//         super();
-//         this.state = {
-//             username: "Max"
-//         };
-//     }
-
-//     changeUsername(newName) {
-//         this.setState({
-//             username: newName
-//         });
-//     }
-
-//     render() {
-//         return (
-//             <div className="container">
-//                 <Main changeUsername={this.changeUsername.bind(this)}/>
-//                 <User username={this.state.username}/>
-//             </div>
-//         );
-//     }
-// }
-
-// render(<App />, window.document.getElementById('app'));
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import logger from 'redux-logger';//export as default logger, so no {}
-// create an object/array as an initial state (which we are passing as a 2nd parameter in store) and we can assign it directly to state param in reduces and get rid of it in the createStrore()
+import React from "react";
+import { render } from "react-dom";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import logger from 'redux-logger'; //export as default logger, so no {}
+import App from './container/App';
+import {Provider} from 'react-redux';
+ // create an object/array as an initial state (which we are passing as a 2nd parameter in store) and we can assign it directly to state param in reduces and get rid of it in the createStrore()
 
 // One reducer can handle multiple actions
 const mathReducer = (state = {
@@ -99,7 +72,7 @@ const myLogger = (store) => (next) =>(action)=> {
  */
 // reducer must return a state..Else it causes errors..//1 js obj may have seceral substates // remove 2nd arg '1'
 //to pass the state
-const store = createStore(combineReducers({mathReducer, userReducer}),
+const store = createStore(combineReducers({math: mathReducer, user: userReducer}),
 {},
 applyMiddleware(myLogger,logger()) //logger() is the 3rd party middleware
 ); 
@@ -109,19 +82,25 @@ store.subscribe(()=> {
 // store dispatches( since store knows who is handling it, and store doen't handle the actions) the action to reducer as reducer handles the action and reducer results the new state to store..
 // store.dispatch(action)
 /**we need a valu( a payload) to this action if you add other pkgs which enhance redux functionality, often times expect payload as a name to be used here */
-store.dispatch({
-    type: "Add", //Make sure to use unique action types
-    payload: 10
-});
-store.dispatch({
-    type: "SUBTRACT",
-    payload: 5
-});
-store.dispatch({
-    type: "SET_NAME",
-    payload: "MAX"
-});
-store.dispatch({
-    type: "SET_AGE",
-    payload: 30
-});
+// store.dispatch({
+//     type: "Add", //Make sure to use unique action types
+//     payload: 10
+// });
+// store.dispatch({
+//     type: "SUBTRACT",
+//     payload: 5
+// });
+// store.dispatch({
+//     type: "SET_NAME",
+//     payload: "MAX"
+// });
+// store.dispatch({
+//     type: "SET_AGE",
+//     payload: 30
+// });
+//Provider from react-redux pkg wraps our whole App component 
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    window.document.getElementById('app'));

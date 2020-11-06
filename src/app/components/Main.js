@@ -1,7 +1,6 @@
 import React from "react";
 
-export class Main extends React.Component {
-    render() {
+export const Main = (props) => {
         return (
             <div>
                 <div className="row">
